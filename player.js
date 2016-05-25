@@ -5,20 +5,38 @@ var inquirer = require('inquirer');
 
 var game = require('./game.source');
 
-var questions = [
-	{
-	    type: 'list',
-	    name: 'choice',
-	    message: game.startingPoint.text,
-	    choices: Object.keys(game.startingPoint.conditions)
-  	}
-];
+function playGame(node) {
+	var choiceArr = Object.keys(node.conditions);
+	if(!choiceArr.length) {
+		console.log(node.text);
+		return;
+	}
+	var questions = [
+		{
+		    type: 'list',
+		    name: 'choice',
+		    message: node.text,
+		    choices: choiceArr
+		    // array: key names are the conditions, ie left/right, blue/green/red
+	  	}
+	];
 
-inquirer.prompt(questions).then(function(answers) {
-	console.log(answers);
-});
+	inquirer.prompt(questions).then(function(answers) {
+		// The conditions[answers.choice] is going to be a key inside the conditions object. 
+		// Answer format: { choice: 'left' }
+		var nextNode = node.conditions[answers.choice].value; 
+		playGame(nextNode);
+	});
+}
+
+playGame(game.startingPoint);
+
+
 
 /**
+Question
+A question object is a hash containing question related values:
+
 type: (String) Type of the prompt. Defaults: input - Possible values: input, confirm, list, rawlist, password
 name: (String) The name to use when storing the answer in the answers hash.
 message: (String|Function) The question to print. If defined as a function, the first parameter will be the current inquirer session answers.

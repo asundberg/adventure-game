@@ -11,7 +11,7 @@ var Node = function(title, text) {
 
 Node.prototype.connect = function(nextNode, condition) {
 	if(typeof this.conditions[condition] === 'undefined') {
-		// If the condition doesn't already exist:
+		// If the condition doesn't already exist in that Node:
 		var newConnection = new Connection(nextNode, condition); // Create a new Connection.
 		this.connections.push(newConnection); // Push the new Connection into the connections array.
 		this.conditions[condition] = newConnection; // And put the new Connection object as the value to the condition key, inside the conditions object.
