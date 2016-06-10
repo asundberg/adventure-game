@@ -28,6 +28,9 @@ Game.prototype.getNode = function(title) {
 Game.prototype.connect = function(title1, title2, condition) {
 	var firstNode = this.getNode(title1);
 	var secondNode = this.getNode(title2);
+	if(!firstNode || !secondNode) {
+		throw new Error('One of the nodes doesn\'t exist');
+	}
 	firstNode.connect(secondNode, condition);
 };
 
